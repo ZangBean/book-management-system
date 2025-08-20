@@ -1,9 +1,12 @@
+.header-content {
+  background-color: #282c34;
+}
+
 .header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 20px;
-  background-color: #282c34;
 }
 
 .nav-link {

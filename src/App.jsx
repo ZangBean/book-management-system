@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   BrowserRouter,
+
 } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import Header from './componets/Header'
@@ -25,7 +26,6 @@ function App() {
     try {
       setLoading(true);
       const res = await getBooks();
-      console.log(res);
       setBooks(res);
     } catch (err) {
       setError(err.message);
@@ -46,6 +46,7 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
+
         {/* <Route path='/' element={<HomePage />} /> */}
         <Route path='/about' element={<AboutPage />} />
         <Route path='/' element={<BookPage books={books} />} />
