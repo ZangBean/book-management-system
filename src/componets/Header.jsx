@@ -1,14 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./Header.component.css";
+import logo from "../assets/logo.png";
 
 const Header = () => {
   return (
-    <div>
-      <Link to="/">Home</Link>
-      <Link to="/book">Book</Link>
-      <Link to="/book-form">Book Form</Link>
-      <Link to="/genre">Genre</Link>
-      <Link to="/about">About</Link>
+    <div className="header">
+      <Link to="/" className="logo-link">
+        <img src={logo} alt="logo" />
+      </Link>
+      <Link to="/" className="nav-link">
+        Home
+      </Link>
+      <Link to="/genre" className="nav-link">
+        Genre
+      </Link>
+      <Link to="/about" className="nav-link">
+        About
+      </Link>
+      <input type="text" placeholder="Search..." className="search-input" />
+      <button className="circle-button">+</button>
     </div>
   );
 };
