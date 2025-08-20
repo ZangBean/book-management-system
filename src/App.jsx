@@ -15,28 +15,29 @@ import AboutPage from './pages/AboutPage'
 import { getBooks } from './services/bookService'
 import BookDetail from './pages/BookDetail'
 
+
 function App() {
-  const onChange = () => {}
-  const [books, setBooks] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const onChange = () => {};
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const fetchBooks = async () => {
     try {
-      setLoading(true)
-      const res = await getBooks()
-      console.log(res)
-      setBooks(res)
+      setLoading(true);
+      const res = await getBooks();
+      console.log(res);
+      setBooks(res);
     } catch (err) {
-      setError(err.message)
+      setError(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
   useEffect(() => {
-    fetchBooks()
+    fetchBooks();
 
-    return () => {}
-  }, [])
+    return () => {};
+  }, []);
 
   if (loading) return <p>Đang tải...</p>
   if (error) return <p style={{ color: 'red' }}>Lỗi: {error}</p>
@@ -51,11 +52,11 @@ function App() {
         <Route path='/book/:id' element={<BookDetail />} />
         <Route path='/bookform' element={<BookForm />} />
         <Route path='/genre' element={<GernePage books={books} />} />
+
       </Routes>
       <Footer />
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
-
+export default App;
