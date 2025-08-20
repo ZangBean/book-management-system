@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import '../styles/BookPage.css'
-
-// import './BookPage.css'
+import { useNavigate } from 'react-router-dom'
 
 const BookPage = ({ books }) => {
+  const navigate = useNavigate()
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 12
+
+  // Tổng số trang
+  const totalPages = Math.ceil(books.length / itemsPerPage)
+
+  // Tính start và end index
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentBooks = books.slice(startIndex, endIndex)
+
   return (
     <div className='book-page'>
-      <h1 className='page-title'>Book Page</h1>
-
       {/* Slider */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
@@ -29,15 +38,13 @@ const BookPage = ({ books }) => {
         }}
         className='book-slider'
       >
-        {books.slice(1, 19).map((book) => (
-          <SwiperSlide key={book.id}>
+        {books.slice(1, 10).map((book) => (
+          <SwiperSlide
+            key={book.id}
+            onClick={() => navigate(`/book/${book.id}`)}
+          >
             <div className='book-card'>
-              <img
-                src={book.avatar}
-                alt={book.name}
-                className='book-img'
-                loading='lazy'
-              />
+              <img src={book.avatar} alt={book.name} className='book-img' />
               <h2 className='book-title'>{book.name}</h2>
               <p className='book-author'>{book.author}</p>
               <p className='book-genre'>{book.genre}</p>
@@ -47,16 +54,15 @@ const BookPage = ({ books }) => {
         ))}
       </Swiper>
 
-      {/* List dưới slider */}
+      {/* List dưới slider có phân trang */}
       <ul className='book-list'>
-        {books.map((book) => (
-          <li key={book.id} className='book-list-item'>
-            <img
-              src={book.avatar}
-              alt={book.name}
-              className='book-list-img'
-              loading='lazy'
-            />
+        {currentBooks.map((book) => (
+          <li
+            key={book.id}
+            className='book-list-item'
+            onClick={() => navigate(`/book/${book.id}`)}
+          >
+            <img src={book.avatar} alt={book.name} className='book-list-img' />
             <h2 className='book-list-title'>{book.name}</h2>
             <p className='book-list-author'>{book.author}</p>
             <p className='book-list-desc'>{book.description}</p>
@@ -64,6 +70,33 @@ const BookPage = ({ books }) => {
           </li>
         ))}
       </ul>
+
+      {/* Pagination */}
+      <div className='pagination'>
+        <button
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((prev) => prev - 1)}
+        >
+          Prev
+        </button>
+
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index + 1}
+            className={currentPage === index + 1 ? 'active' : ''}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((prev) => prev + 1)}
+        >
+          Next
+        </button>
+      </div>
     </div>
   )
 }

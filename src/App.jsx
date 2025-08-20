@@ -13,6 +13,7 @@ import HomePage from './pages/HomePage'
 import GernePage from './pages/GernePage'
 import AboutPage from './pages/AboutPage'
 import { getBooks } from './services/bookService'
+import BookDetail from './pages/BookDetail'
 
 function App() {
   const onChange = () => {}
@@ -37,6 +38,9 @@ function App() {
     return () => {}
   }, [])
 
+  if (loading) return <p>Đang tải...</p>
+  if (error) return <p style={{ color: 'red' }}>Lỗi: {error}</p>
+
   return (
     <BrowserRouter>
       <Header />
@@ -44,7 +48,8 @@ function App() {
         {/* <Route path='/' element={<HomePage />} /> */}
         <Route path='/about' element={<AboutPage />} />
         <Route path='/' element={<BookPage books={books} />} />
-        <Route path='/bookform/:id' element={<BookForm />} />
+        <Route path='/book/:id' element={<BookDetail />} />
+        <Route path='/bookform' element={<BookForm />} />
         <Route path='/genre' element={<GernePage books={books} />} />
       </Routes>
       <Footer />
