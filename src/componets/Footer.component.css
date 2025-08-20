@@ -1,0 +1,33 @@
+.footer {
+  background-color: #282c34;
+  color: #fff;
+  padding: 20px 10px;
+  text-align: center;
+  margin-top: 30px;
+  bottom: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-links a {
+  color: #61dafb;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
