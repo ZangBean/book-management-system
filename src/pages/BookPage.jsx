@@ -1,18 +1,15 @@
-
 import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
-import '../styles/BookPage.css'
 import { useNavigate } from 'react-router-dom'
-
 
 const BookPage = ({ books }) => {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 12
+  const itemsPerPage = 10
 
   // Tổng số trang
   const totalPages = Math.ceil(books.length / itemsPerPage)
@@ -23,9 +20,7 @@ const BookPage = ({ books }) => {
   const currentBooks = books.slice(startIndex, endIndex)
 
   return (
-
-    <div className="book-page container">
-
+    <div className='book-page container'>
       {/* Slider */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
@@ -40,7 +35,7 @@ const BookPage = ({ books }) => {
           640: { slidesPerView: 2 },
           1024: { slidesPerView: 4 },
         }}
-        className="book-slider"
+        className='book-slider'
       >
         {books.slice(1, 10).map((book) => (
           <SwiperSlide
@@ -57,7 +52,6 @@ const BookPage = ({ books }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-
 
       {/* List dưới slider có phân trang */}
       <ul className='book-list'>
@@ -103,7 +97,8 @@ const BookPage = ({ books }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BookPage;
+export default BookPage
+
