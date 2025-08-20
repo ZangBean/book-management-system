@@ -9,7 +9,7 @@ import Header from "./componets/Header";
 import Footer from "./componets/Footer";
 import BookPage from "./pages/BookPage";
 import BookForm from "./pages/BookForm";
-import GernePage from "./pages/GernePage";
+import GenrePage from "./pages/GenrePage";
 import AboutPage from "./pages/AboutPage";
 import { getBooks } from "./services/bookService";
 
@@ -22,7 +22,6 @@ function App() {
     try {
       setLoading(true);
       const res = await getBooks();
-      console.log(res);
       setBooks(res);
     } catch (err) {
       setError(err.message);
@@ -42,7 +41,7 @@ function App() {
       <Routes>
         <Route path="/" element={<BookPage books={books} />} />
         <Route path="/bookform/:id" element={<BookForm />} />
-        <Route path="/genre" element={<GernePage books={books} />} />
+        <Route path="/genre" element={<GenrePage books={books} />} />
         <Route path="/about" element={<AboutPage />} />
       </Routes>
       <Footer />
