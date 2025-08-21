@@ -69,21 +69,27 @@ const GenrePage = ({ books }) => {
           {totalPages > 1 && (
             <div className="pagination">
               <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => prev - 1)}
               >
-                Prev
+                ⬅
               </button>
-              <span>
-                Page {currentPage} of {totalPages}
-              </span>
+
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index + 1}
+                  className={currentPage === index + 1 ? 'active' : ''}
+                  onClick={() => setCurrentPage(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+
               <button
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(p + 1, totalPages))
-                }
                 disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
               >
-                Next
+                ➡
               </button>
             </div>
           )}
