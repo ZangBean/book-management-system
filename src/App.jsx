@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  BrowserRouter,
+} from "react-router-dom";
+import { useState, useEffect } from "react";
+import Header from "./componets/Header";
+import Footer from "./componets/Footer";
+import BookPage from "./pages/BookPage";
+
+import AboutPage from "./pages/AboutPage";
+import { getBooks } from "./services/bookService";
+import BookDetail from "./pages/BookDetail";
+import GenrePage from "./pages/GenrePage";
+import Loading from "./componets/Loading";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const onChange = () => {};
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const fetchBooks = async () => {
+    try {
+      setLoading(true);
+      const res = await getBooks();
+      setBooks(res);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchBooks();
+    return () => {};
+  }, []);
+
+  if (loading) return <Loading />;
+  if (error) return <p style={{ color: "red" }}>Lỗi: {error}</p>;
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Header books={books} setBooks={setBooks} />
+      <Routes>
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/" element={<BookPage books={books} />} />
+        <Route path="/book/:id" element={<BookDetail setBooks={setBooks} />} />
+        <Route path="/genre" element={<GenrePage books={books} />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
