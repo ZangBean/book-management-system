@@ -21,6 +21,7 @@ const BookPage = ({ books }) => {
 
   return (
     <div className='book-page container'>
+      <h1 className='page-title'>Sách nổi bật </h1>
       {/* Slider */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
@@ -71,31 +72,33 @@ const BookPage = ({ books }) => {
       </ul>
 
       {/* Pagination */}
-      <div className='pagination'>
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage((prev) => prev - 1)}
-        >
-          Prev
-        </button>
-
-        {[...Array(totalPages)].map((_, index) => (
+      {totalPages > 1 && (
+        <div className='pagination'>
           <button
-            key={index + 1}
-            className={currentPage === index + 1 ? 'active' : ''}
-            onClick={() => setCurrentPage(index + 1)}
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
           >
-            {index + 1}
+            ⬅
           </button>
-        ))}
 
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-        >
-          Next
-        </button>
-      </div>
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index + 1}
+              className={currentPage === index + 1 ? 'active' : ''}
+              onClick={() => setCurrentPage(index + 1)}
+            >
+              {index + 1}
+            </button>
+          ))}
+
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+          >
+            ➡
+          </button>
+        </div>
+      )}
     </div>
   )
 }
