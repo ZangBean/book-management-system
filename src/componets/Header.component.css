@@ -36,6 +36,15 @@
   flex-grow: 1;
   max-width: 300px;
   background-color: #fff;
+  position: relative;
+}
+.search-button {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  top: 0%;
+  right: 15px;
+  padding: 5px 10px;
 }
 
 .circle-button {
@@ -47,5 +56,33 @@
   color: #fff;
   font-size: 24px;
   cursor: pointer;
+}
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  max-height: 250px;
+  /* overflow-y: auto; */
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  z-index: 1000;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background: #f0f0f0;
 }
 

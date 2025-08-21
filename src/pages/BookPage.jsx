@@ -6,7 +6,7 @@ import 'swiper/css/pagination'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import { useNavigate } from 'react-router-dom'
 
-const BookPage = ({ books }) => {
+const BookPage = ({ books, filtereds }) => {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
@@ -17,7 +17,7 @@ const BookPage = ({ books }) => {
   // Tính start và end index
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
-  const currentBooks = books.slice(startIndex, endIndex)
+  const currentBooks = filtereds.slice(startIndex, endIndex)
 
   return (
     <div className='book-page container'>
