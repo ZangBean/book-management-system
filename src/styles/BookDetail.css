@@ -19,6 +19,7 @@
 
 .book-info {
   flex: 1;
+  position: relative;
 }
 
 .book-info h1 {
@@ -35,9 +36,17 @@
 }
 
 .button-group {
+  width: 100%;
   margin-top: 20px;
   display: flex;
-  gap: 15px;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+}
+
+.button-group > div {
+  display: flex;
+  gap: 20px;
 }
 
 .btn {
@@ -65,4 +74,13 @@
 
 .btn.delete:hover {
   background-color: #d32f2f;
+}
+
+.btn.back {
+  background-color: #2196f3;
+  color: white;
+}
+
+.btn.back:hover {
+  background-color: #1976d2;
 }
