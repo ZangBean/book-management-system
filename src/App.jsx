@@ -32,6 +32,9 @@ function App() {
       setLoading(false)
     }
   }
+  console.log('book:', books)
+  console.log('filter:', filtereds)
+
   useEffect(() => {
     fetchBooks()
     return () => {}
@@ -42,21 +45,18 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Header
-        books={books}
-        setBooks={setBooks}
-        filtereds={filtereds}
-        setFiltereds={setFiltereds}
-      />
+      <Header books={books} setBooks={setBooks} />
       <Routes>
         <Route path='/about' element={<AboutPage />} />
         <Route
           path='/'
           element={<BookPage books={books} filtereds={filtereds} />}
         />
-        <Route path='/book/:id' element={<BookDetail books={books} setBooks={setBooks} />} />
+        <Route
+          path='/book/:id'
+          element={<BookDetail books={books} setBooks={setBooks} />}
+        />
         <Route path='/genre' element={<GenrePage books={books} />} />
-
       </Routes>
       <Footer />
     </BrowserRouter>
