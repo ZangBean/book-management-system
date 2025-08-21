@@ -1,9 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import './Header.component.css'
-import logo from '../assets/logo.png'
 
-const Header = () => {
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./Header.component.css";
+import logo from "../assets/logo.png";
+import ModalAddBook from "../pages/BookForm";
+
+const Header = ({ books, setBooks }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddBook = (newBook) => {
+    setBooks((prev) => [...prev, newBook]);
+  };
+
+
   return (
     <header className='header-content'>
       <div className='header container'>
@@ -19,8 +28,17 @@ const Header = () => {
         <Link to='/about' className='nav-link'>
           About
         </Link>
-        <input type='text' placeholder='Search...' className='search-input' />
-        <button className='circle-button'>+</button>
+        <input type="text" placeholder="Search..." className="search-input" />
+        <button onClick={() => setIsModalOpen(true)} className="circle-button">
+          +
+        </button>
+        <ModalAddBook
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAddBook={handleAddBook}
+          books={books}
+        />
+
       </div>
     </header>
   )
