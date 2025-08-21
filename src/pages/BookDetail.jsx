@@ -3,11 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getBookById, deleteBook } from "../services/bookService";
 import "../styles/BookDetail.css";
 import Loading from "../componets/Loading";
+import ModalAddBook from "../pages/BookForm";
 
-const BookDetail = ({ setBooks }) => {
+const BookDetail = ({ books, setBooks }) => {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editBook, setEditBook] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -15,13 +18,25 @@ const BookDetail = ({ setBooks }) => {
     try {
       setLoading(true);
       const res = await getBookById(id);
-      console.log("book:", res.data);
       setBook(res);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleUpdateBook = (updatedBook) => {
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        book.id === updatedBook.id ? { ...book, ...updatedBook } : book
+      )
+    );
+    setBook(updatedBook);
+  };
+  const openEditModal = (book) => {
+    setEditBook(book);
+    setIsModalOpen(true);
   };
 
   const handleDelete = async () => {
@@ -71,14 +86,23 @@ const BookDetail = ({ setBooks }) => {
           <strong>Description:</strong> {book.description}
         </p>
         <div className="button-group">
-          <button
-            className="btn edit"
-            onClick={() => navigate(`/books/edit/${id}`)}
-          >
-            Edit
-          </button>
-          <button className="btn delete" onClick={handleDelete}>
-            Delete
+          <div>
+            <button className="btn edit" onClick={() => openEditModal(book)}>
+              Edit
+            </button>
+            <ModalAddBook
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              onUpdateBook={handleUpdateBook}
+              books={books}
+              editBook={editBook}
+            />
+            <button className="btn delete" onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
+          <button className="btn back" onClick={() => navigate(-1)}>
+            Back
           </button>
         </div>
       </div>

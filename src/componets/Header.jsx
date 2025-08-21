@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Header.component.css'
@@ -11,9 +12,9 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
   const [allBooks] = useState(filtereds) // giữ danh sách gốc
   const [suggestions, setSuggestions] = useState([])
 
-  const handleAddBook = (newBook) => {
-    setBooks((prev) => [...prev, newBook])
-  }
+    const handleAddBook = (newBook) => {
+    setBooks((prev) => [newBook, ...prev]);
+  };
 
   const handleSearch = () => {
     if (searchTerm.trim() === '') {
@@ -51,19 +52,20 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
     )
   }
 
+
   return (
-    <header className='header-content'>
-      <div className='header container'>
-        <Link to='/' className='logo-link'>
-          <img src={logo} alt='logo' />
+    <header className="header-content">
+      <div className="header container">
+        <Link to="/" className="logo-link">
+          <img src={logo} alt="logo" />
         </Link>
-        <Link to='/' className='nav-link'>
+        <Link to="/" className="nav-link">
           Home
         </Link>
-        <Link to='/genre' className='nav-link'>
+        <Link to="/genre" className="nav-link">
           Genre
         </Link>
-        <Link to='/about' className='nav-link'>
+        <Link to="/about" className="nav-link">
           About
         </Link>
 
@@ -111,8 +113,7 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
         />
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
-
+export default Header;
