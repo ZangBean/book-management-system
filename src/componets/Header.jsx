@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Header.component.css'
@@ -6,24 +5,24 @@ import logo from '../assets/logo.png'
 import ModalAddBook from '../pages/BookForm'
 import { FaSearch } from 'react-icons/fa'
 
-const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
+const Header = ({ books, setBooks }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [allBooks] = useState(filtereds) // giữ danh sách gốc
+  const [allBooks] = useState(books) // giữ danh sách gốc
   const [suggestions, setSuggestions] = useState([])
 
-    const handleAddBook = (newBook) => {
-    setBooks((prev) => [newBook, ...prev]);
-  };
+  const handleAddBook = (newBook) => {
+    setBooks((prev) => [newBook, ...prev])
+  }
 
   const handleSearch = () => {
     if (searchTerm.trim() === '') {
-      setFiltereds(allBooks)
+      setBooks(allBooks)
     } else {
       const filteredBooks = allBooks.filter((book) =>
         book.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      setFiltereds(filteredBooks)
+      setBooks(filteredBooks)
     }
     setSuggestions([]) // clear gợi ý sau khi search
   }
@@ -45,27 +44,26 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
   const handleSuggestionClick = (bookName) => {
     setSearchTerm(bookName)
     setSuggestions([])
-    setFiltereds(
+    setBooks(
       allBooks.filter((book) =>
         book.name.toLowerCase().includes(bookName.toLowerCase())
       )
     )
   }
 
-
   return (
-    <header className="header-content">
-      <div className="header container">
-        <Link to="/" className="logo-link">
-          <img src={logo} alt="logo" />
+    <header className='header-content'>
+      <div className='header container'>
+        <Link to='/' className='logo-link'>
+          <img src={logo} alt='logo' />
         </Link>
-        <Link to="/" className="nav-link">
+        <Link to='/' className='nav-link'>
           Home
         </Link>
-        <Link to="/genre" className="nav-link">
+        <Link to='/genre' className='nav-link'>
           Genre
         </Link>
-        <Link to="/about" className="nav-link">
+        <Link to='/about' className='nav-link'>
           About
         </Link>
 
@@ -113,7 +111,8 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
         />
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
+
