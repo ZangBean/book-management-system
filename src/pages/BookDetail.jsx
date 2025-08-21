@@ -71,14 +71,19 @@ const BookDetail = ({ setBooks }) => {
           <strong>Description:</strong> {book.description}
         </p>
         <div className="button-group">
-          <button
-            className="btn edit"
-            onClick={() => navigate(`/books/edit/${id}`)}
-          >
-            Edit
-          </button>
-          <button className="btn delete" onClick={handleDelete}>
-            Delete
+          <div>
+            <button
+              className="btn edit"
+              onClick={() => navigate(`/books/edit/${id}`)}
+            >
+              Edit
+            </button>
+            <button className="btn delete" onClick={handleDelete}>
+              Delete
+            </button>
+          </div>
+          <button className="btn back" onClick={() => navigate(-1)}>
+            Back
           </button>
         </div>
       </div>
