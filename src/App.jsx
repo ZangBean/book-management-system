@@ -9,11 +9,11 @@ import Header from "./componets/Header";
 import Footer from "./componets/Footer";
 import BookPage from "./pages/BookPage";
 
-import AboutPage from './pages/AboutPage'
-import { getBooks } from './services/bookService'
-import BookDetail from './pages/BookDetail'
-import GenrePage from './pages/GenrePage'
-import Loading from './componets/Loading'
+import AboutPage from "./pages/AboutPage";
+import { getBooks } from "./services/bookService";
+import BookDetail from "./pages/BookDetail";
+import GenrePage from "./pages/GenrePage";
+import Loading from "./componets/Loading";
 
 function App() {
   const onChange = () => {};
@@ -33,12 +33,11 @@ function App() {
   };
   useEffect(() => {
     fetchBooks();
-
     return () => {};
   }, []);
 
-  if (loading) return <Loading />
-  if (error) return <p style={{ color: 'red' }}>Lỗi: {error}</p>
+  if (loading) return <Loading />;
+  if (error) return <p style={{ color: "red" }}>Lỗi: {error}</p>;
 
   return (
     <BrowserRouter>
@@ -46,7 +45,7 @@ function App() {
       <Routes>
         <Route path="/about" element={<AboutPage />} />
         <Route path="/" element={<BookPage books={books} />} />
-        <Route path="/book/:id" element={<BookDetail />} />
+        <Route path="/book/:id" element={<BookDetail setBooks={setBooks} />} />
         <Route path="/genre" element={<GenrePage books={books} />} />
       </Routes>
       <Footer />
