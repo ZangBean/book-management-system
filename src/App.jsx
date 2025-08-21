@@ -45,7 +45,10 @@ function App() {
       <Routes>
         <Route path="/about" element={<AboutPage />} />
         <Route path="/" element={<BookPage books={books} />} />
-        <Route path="/book/:id" element={<BookDetail setBooks={setBooks} />} />
+        <Route
+          path="/book/:id"
+          element={<BookDetail books={books} setBooks={setBooks} />}
+        />
         <Route path="/genre" element={<GenrePage books={books} />} />
       </Routes>
       <Footer />

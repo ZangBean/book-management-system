@@ -1,7 +1,14 @@
-import React, { useState } from "react";
-import { createBook } from "../services/bookService";
+import React, { useState, useEffect } from "react";
+import { createBook, updateBook } from "../services/bookService";
 
-const ModalAddBook = ({ isOpen, onClose, onAddBook, books }) => {
+const ModalAddBook = ({
+  isOpen,
+  onClose,
+  onAddBook,
+  onUpdateBook,
+  books,
+  editBook,
+}) => {
   const genres = [...new Set((books || []).map((book) => book.genre))];
   const [formData, setFormData] = useState({
     name: "",
@@ -15,6 +22,22 @@ const ModalAddBook = ({ isOpen, onClose, onAddBook, books }) => {
     price: "",
   });
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (editBook) {
+      setFormData({
+        name: editBook.name || "",
+        avatar: editBook.avatar || "",
+        author: editBook.author || "",
+        status: editBook.status || "available",
+        genre: editBook.genre || "",
+        quantity: editBook.quantity || 0,
+        description: editBook.description || "",
+        publisher: editBook.publisher || "",
+        price: editBook.price || "",
+      });
+    }
+  }, [editBook]);
 
   if (!isOpen) return null;
 
@@ -35,17 +58,15 @@ const ModalAddBook = ({ isOpen, onClose, onAddBook, books }) => {
       ...formData,
       createdAt: new Date().toISOString(),
     };
-    console.log(formData);
 
     try {
-      // Call API to create book
-      console.log("Sending to API:", bookData); // Debug
-      const savedBook = await createBook(bookData);
-      console.log("API response:", savedBook);
-
-      // Call the callback to update the book list
-      onAddBook(savedBook);
-      // Reset form
+      if (editBook) {
+        const updatedBook = await updateBook(editBook.id, bookData);
+        onUpdateBook(updatedBook);
+      } else {
+        const savedBook = await createBook(bookData);
+        onAddBook(savedBook);
+      }
       setFormData({
         name: "",
         avatar: "",
@@ -67,7 +88,7 @@ const ModalAddBook = ({ isOpen, onClose, onAddBook, books }) => {
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <h2>Add New Book</h2>
+        <h2>{editBook ? "Edit Book" : "Add New Book"}</h2>
         <form onSubmit={handleSubmit} className="modal-form">
           <input
             type="text"
@@ -130,7 +151,6 @@ const ModalAddBook = ({ isOpen, onClose, onAddBook, books }) => {
             value={formData.price}
             onChange={handleChange}
             min="0"
-            step="0.01"
           />
           <input
             type="text"
@@ -140,11 +160,11 @@ const ModalAddBook = ({ isOpen, onClose, onAddBook, books }) => {
             onChange={handleChange}
           />
           <div className="modal-actions">
-            <button type="submit" className="btn-save">
-              Save
-            </button>
             <button type="button" className="btn-cancel" onClick={onClose}>
               Cancel
+            </button>
+            <button type="submit" className="btn-save">
+              {editBook ? "Update" : "Save"}
             </button>
           </div>
         </form>
