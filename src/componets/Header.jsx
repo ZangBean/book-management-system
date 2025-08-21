@@ -1,15 +1,57 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./Header.component.css";
-import logo from "../assets/logo.png";
-import ModalAddBook from "../pages/BookForm";
 
-const Header = ({ books, setBooks }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import './Header.component.css'
+import logo from '../assets/logo.png'
+import ModalAddBook from '../pages/BookForm'
+import { FaSearch } from 'react-icons/fa'
 
-  const handleAddBook = (newBook) => {
+const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [allBooks] = useState(filtereds) // giữ danh sách gốc
+  const [suggestions, setSuggestions] = useState([])
+
+    const handleAddBook = (newBook) => {
     setBooks((prev) => [newBook, ...prev]);
   };
+
+  const handleSearch = () => {
+    if (searchTerm.trim() === '') {
+      setFiltereds(allBooks)
+    } else {
+      const filteredBooks = allBooks.filter((book) =>
+        book.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      setFiltereds(filteredBooks)
+    }
+    setSuggestions([]) // clear gợi ý sau khi search
+  }
+
+  const handleInputChange = (e) => {
+    const value = e.target.value
+    setSearchTerm(value)
+
+    if (value.trim() === '') {
+      setSuggestions([])
+    } else {
+      const filtered = allBooks.filter((book) =>
+        book.name.toLowerCase().includes(value.toLowerCase())
+      )
+      setSuggestions(filtered.slice(0, 5)) // lấy max 5 gợi ý
+    }
+  }
+
+  const handleSuggestionClick = (bookName) => {
+    setSearchTerm(bookName)
+    setSuggestions([])
+    setFiltereds(
+      allBooks.filter((book) =>
+        book.name.toLowerCase().includes(bookName.toLowerCase())
+      )
+    )
+  }
+
 
   return (
     <header className="header-content">
@@ -26,8 +68,41 @@ const Header = ({ books, setBooks }) => {
         <Link to="/about" className="nav-link">
           About
         </Link>
-        <input type="text" placeholder="Search..." className="search-input" />
-        <button onClick={() => setIsModalOpen(true)} className="circle-button">
+
+        <div className='search-container'>
+          <input
+            type='text'
+            placeholder='Search...'
+            className='search-input'
+            value={searchTerm}
+            onChange={handleInputChange}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch()
+              }
+            }}
+          />
+          <button onClick={handleSearch}>
+            <FaSearch className='search-button' />
+          </button>
+
+          {/* Danh sách gợi ý */}
+          {suggestions.length > 0 && (
+            <ul className='suggestions-list'>
+              {suggestions.map((book, index) => (
+                <li
+                  key={index}
+                  className='suggestion-item'
+                  onClick={() => handleSuggestionClick(book.name)}
+                >
+                  {book.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <button onClick={() => setIsModalOpen(true)} className='circle-button'>
           +
         </button>
         <ModalAddBook
