@@ -14,6 +14,7 @@ import AboutPage from './pages/AboutPage'
 import { getBooks } from './services/bookService'
 import BookDetail from './pages/BookDetail'
 import GenrePage from './pages/GenrePage'
+import Loading from './componets/Loading'
 
 function App() {
   const onChange = () => {}
@@ -37,7 +38,7 @@ function App() {
     return () => {}
   }, [])
 
-  if (loading) return <p>Đang tải...</p>
+  if (loading) return <Loading />
   if (error) return <p style={{ color: 'red' }}>Lỗi: {error}</p>
 
   return (

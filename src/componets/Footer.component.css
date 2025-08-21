@@ -1,8 +1,9 @@
 .footer {
   background-color: #282c34;
-  color: #fff;
-  padding: 20px 10px;
+  color: hsl(0, 0%, 100%);
+  padding: 10px;
   text-align: center;
+  margin-top: 50px;
 }
 
 .footer-content {
@@ -26,3 +27,4 @@
 .footer-links a:hover {
   color: #fff;
 }
+

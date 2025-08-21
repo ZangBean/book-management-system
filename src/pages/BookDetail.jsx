@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getBookById, deleteBook } from '../services/bookService'
 import '../styles/BookDetail.css'
+import Loading from '../componets/Loading'
 
 const BookDetail = () => {
   const [book, setBook] = useState(null)
@@ -39,7 +40,7 @@ const BookDetail = () => {
     fetchBook(id)
   }, [id])
 
-  if (loading) return <p>Đang tải...</p>
+  if (loading) return <Loading />
   if (error) return <p style={{ color: 'red' }}>Lỗi: {error}</p>
   if (!book) return <p>Không tìm thấy sách</p>
 
