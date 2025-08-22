@@ -89,9 +89,7 @@ const AboutPage = () => {
           </div>
         </section>
 
-        <p className='footer-note'>
-          © {new Date().getFullYear()} BookApp — Built with ❤️ for readers.
-        </p>
+        <p className='footer-note'>© {new Date().getFullYear()} BookApp</p>
       </div>
     </div>
   )

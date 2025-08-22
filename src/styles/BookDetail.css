@@ -33,6 +33,11 @@
   line-height: 1.5;
   font-size: 16px;
   color: #444;
+  display: flex;
+  column-gap: 5px;
+}
+.book-info svg {
+  margin-top: 4px;
 }
 
 .button-group {
@@ -81,4 +86,121 @@
 }
 .btn.back:hover {
   background-color: #1976d2;
+}
+/* Desktop (>=1025px) giữ nguyên như cũ */
+
+/* Tablet vừa (768px - 1024px) */
+@media (max-width: 1024px) {
+  .book-detail-container {
+    flex-direction: row;
+    gap: 20px;
+    padding: 15px;
+  }
+
+  .book-image {
+    width: 250px;
+    height: 340px;
+  }
+
+  .book-info h1 {
+    font-size: 24px;
+  }
+
+  .book-info p {
+    font-size: 15px;
+  }
+
+  .button-group {
+    margin-top: 15px;
+  }
+}
+
+/* Tablet nhỏ & mobile dọc (<=768px) */
+@media (max-width: 768px) {
+  .book-detail-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    gap: 20px;
+    border: none;
+    box-shadow: none;
+  }
+
+  .book-image {
+    width: 220px;
+    height: 280px;
+    margin-bottom: 15px;
+  }
+
+  .book-info {
+    text-align: center;
+    width: 100%;
+    position: static;
+    line-height: 1;
+  }
+
+  .book-info h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .book-info p {
+    font-size: 15px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    position: static;
+    width: 100%;
+  }
+
+  .button-group > div {
+    flex-direction: row;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .button-group > div .btn {
+    flex: 1;
+  }
+
+  .btn.back {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
+}
+
+/* Mobile nhỏ (<=480px) */
+@media (max-width: 480px) {
+  .book-detail-container {
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .book-image {
+    width: 180px;
+    height: 240px;
+  }
+
+  .book-info h1 {
+    font-size: 20px;
+  }
+
+  .book-info p {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+
+  .btn.back {
+    font-size: 14px;
+    padding: 10px;
+  }
 }

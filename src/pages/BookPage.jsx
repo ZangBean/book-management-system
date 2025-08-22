@@ -10,8 +10,11 @@ import {
   FaArrowUpZA,
   FaBook,
   FaBookAtlas,
+  FaArrowUp91,
+  FaArrowDown19
 } from "react-icons/fa6";
 import "../styles/BookPage.css";
+
 
 const BookPage = ({ books, filtereds }) => {
   const navigate = useNavigate();
@@ -98,10 +101,11 @@ const BookPage = ({ books, filtereds }) => {
               }
               className="filter-button"
             >
-              {sortOrder === "asc" ? (
-                <FaArrowUpZA className="" />
+
+              {sortOrder === 'asc' ? (
+                <FaArrowUp91 className='' />
               ) : (
-                <FaArrowDownAZ className="rotate" />
+                <FaArrowDown19 className='rotate' />
               )}
             </button>
           </div>
