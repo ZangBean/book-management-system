@@ -69,7 +69,11 @@
 }
 
 .pagination .active {
-  background-color: #462bbb;
+  background-color: #1d872c;
+}
+
+.pagination button:hover {
+  background-color: #6fda7f;
 }
 
 /* Slider */
@@ -78,7 +82,7 @@
 }
 
 .book-card {
-  background: #f9f9f9;
+  background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -135,15 +139,17 @@
 }
 
 .book-list-item {
-  background: #f9f9f9;
+  background: #fff;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .book-list-item:hover {
   transform: translateY(-3px);
+  background-color: #b0e6b8;
+  cursor: pointer;
 }
 
 .book-list-img {
@@ -154,6 +160,9 @@
 }
 
 .book-list-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 16px;
   margin: 8px 0 4px;
 }
@@ -165,6 +174,9 @@
 
 .book-list-desc {
   font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: #666;
   margin-top: 4px;
 }
@@ -173,6 +185,41 @@
   font-size: 12px;
   color: #888;
   margin-top: 6px;
+}
+
+.book-list-view {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.book-list-dollar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #5bc76b;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.book-list-item .box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
 }
 
 .page-title {
@@ -203,7 +250,7 @@
   transform: translateY(-50%);
   border-width: 23px;
   border-style: solid;
-  border-color: transparent transparent transparent #fff;
+  border-color: transparent transparent transparent #f8fafc;
 }
 
 .page-title h1::before {
