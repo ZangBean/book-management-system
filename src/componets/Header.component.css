@@ -19,7 +19,7 @@
 }
 
 .nav-link:hover {
-  color: #61dafb;
+  color: #37a447;
 }
 
 .logo-link,
@@ -99,7 +99,7 @@
 }
 
 .move-area::after {
-  content: "Click to add books";
+  content: 'Click to add books';
   position: absolute;
   top: 50%;
   left: 120%;
@@ -116,7 +116,7 @@
 }
 
 .move-area::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 80%;
@@ -137,3 +137,105 @@
   color: #5bc76b;
   border-bottom: 5px solid #5bc76b;
 }
+/* Nút hamburger ẩn ở PC */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+/* Mặc định nav-links hiển thị ngang */
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+/* --------- PC (≥1200px) --------- */
+@media (min-width: 1200px) {
+  .header {
+    gap: 30px;
+  }
+
+  .nav-link {
+    font-size: 20px;
+    padding: 30px;
+  }
+
+  .search-input {
+    width: 350px;
+  }
+
+  .move-area {
+    width: 55px;
+    height: 55px;
+  }
+}
+
+/* --------- Tablet (769px → 1199px) --------- */
+@media (min-width: 769px) and (max-width: 1199px) {
+  .header {
+    gap: 10px;
+  }
+
+  .nav-link {
+    font-size: 16px;
+    padding: 20px;
+  }
+
+  .search-input {
+    width: 220px;
+    font-size: 14px;
+  }
+
+  .move-area {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+/* --------- Mobile (≤768px) --------- */
+@media (max-width: 768px) {
+  .logo-link img {
+    width: 50px;
+    padding: 5px;
+  }
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px; /* dưới header */
+    left: 100px;
+    flex-direction: column;
+    background-color: #282c34;
+    padding: 5px 20px;
+    z-index: 999;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-link {
+    padding: 10px 0;
+    font-size: 18px;
+    border-bottom: 1px solid #444;
+  }
+
+  .search-input {
+    width: 180px;
+    font-size: 14px;
+  }
+
+  .move-area {
+    width: 40px;
+    height: 40px;
+    padding-right: 20px;
+  }
+}
+
