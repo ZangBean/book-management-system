@@ -30,20 +30,18 @@
 }
 
 .search-input {
-  padding: 5px 10px;
+  padding: 5px 40px 5px 15px;
   border-radius: 20px;
   border: 1px solid #ccc;
-  flex-grow: 1;
-  max-width: 300px;
   background-color: #fff;
-  position: relative;
+  width: 300px;
 }
 .search-button {
   height: 40px;
   width: 40px;
   position: absolute;
-  top: 0%;
-  right: 15px;
+  top: -2%;
+  right: 4px;
   padding: 5px 10px;
 }
 
@@ -77,29 +75,81 @@
 }
 
 .move-area {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
 }
+
+.box-eye::after {
+  content: "Click to add books";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  background-color: #37a447;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 16px;
+  white-space: nowrap;
+  font-size: 14px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.box-eye::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translateY(-50%);
+  border-width: 14px;
+  border-style: solid;
+  border-color: transparent #37a447 transparent transparent;
+  opacity: 0;
+}
+
+.move-area:hover .box-eye::after,
+.move-area:hover .box-eye::before {
+  opacity: 1;
+}
+
+.move-area:hover .box-eye::before {
+  left: 80%;
+}
+
+.move-area:hover .box-eye::after {
+  left: 120%;
+}
+
 .box-eye {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 4px;
 }
 .eye {
   position: relative;
   display: inline-block;
   border-radius: 50%;
-  height: 30px;
-  width: 30px;
+  height: 20px;
+  width: 20px;
   background: #ccc;
 }
 .eye:after {
   position: absolute;
-  bottom: 17px;
-  right: 10px;
+  bottom: 10px;
+  right: 6px;
   width: 10px;
   height: 10px;
   background: #000;
   border-radius: 50%;
   content: " ";
+}
+.nav-link.active {
+  font-weight: bold;
+  color: #37a447;
+  border-bottom: 5px solid #37a447;
 }

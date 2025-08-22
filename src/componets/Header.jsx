@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
-import './Header.component.css'
-import logo from '../assets/logo.png'
-import ModalAddBook from '../pages/BookForm'
-import { FaSearch } from 'react-icons/fa'
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink } from "react-router-dom";
+import "./Header.component.css";
+import logo from "../assets/logo.png";
+import ModalAddBook from "../pages/BookForm";
+import { FaSearch } from "react-icons/fa";
+
 
 const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -73,20 +74,29 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
   }, [])
 
   return (
-    <header className='header-content'>
-      <div className='header container'>
-        <Link to='/' className='logo-link'>
-          <img src={logo} alt='logo' />
-        </Link>
-        <Link to='/' className='nav-link'>
+    <header className="header-content">
+      <div className="header container">
+        <NavLink to="/" className="logo-link">
+          <img src={logo} alt="logo" />
+        </NavLink>
+        <NavLink
+          to="/"
+          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+        >
           Home
-        </Link>
-        <Link to='/genre' className='nav-link'>
+        </NavLink>
+        <NavLink
+          to="/genre"
+          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+        >
           Genre
-        </Link>
-        <Link to='/about' className='nav-link'>
+        </NavLink>
+        <NavLink
+          to="/about"
+          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+        >
           About
-        </Link>
+        </NavLink>
 
         <div className='search-container'>
           <input
