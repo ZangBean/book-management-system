@@ -17,12 +17,12 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
 
   const handleSearch = () => {
     if (searchTerm.trim() === '') {
-      setFiltereds(allBooks)
+      setBooks(allBooks)
     } else {
       const filteredBooks = allBooks.filter((book) =>
         book.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
-      setFiltereds(filteredBooks)
+      setBooks(filteredBooks)
     }
     setSuggestions([]) // clear gợi ý sau khi search
   }
@@ -44,7 +44,7 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
   const handleSuggestionClick = (bookName) => {
     setSearchTerm(bookName)
     setSuggestions([])
-    setFiltereds(
+    setBooks(
       allBooks.filter((book) =>
         book.name.toLowerCase().includes(bookName.toLowerCase())
       )

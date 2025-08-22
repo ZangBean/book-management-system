@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -13,11 +13,17 @@ const BookPage = ({ books, filtereds }) => {
 
   // Tổng số trang
   const totalPages = Math.ceil(books.length / itemsPerPage)
-
+  useEffect(() => {
+    // Reset current page when books change
+    setCurrentPage(1)
+    return () => {
+      // Cleanup if needed
+    }
+  }, [books, filtereds])
   // Tính start và end index
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
-  const currentBooks = filtereds.slice(startIndex, endIndex)
+  const currentBooks = books.slice(startIndex, endIndex)
 
   return (
     <div className='book-page container'>
@@ -38,7 +44,7 @@ const BookPage = ({ books, filtereds }) => {
         }}
         className='book-slider'
       >
-        {books.slice(1, 10).map((book) => (
+        {filtereds.slice(1, 10).map((book) => (
           <SwiperSlide
             key={book.id}
             onClick={() => navigate(`/book/${book.id}`)}
@@ -56,19 +62,27 @@ const BookPage = ({ books, filtereds }) => {
 
       {/* List dưới slider có phân trang */}
       <ul className='book-list'>
-        {currentBooks.map((book) => (
-          <li
-            key={book.id}
-            className='book-list-item'
-            onClick={() => navigate(`/book/${book.id}`)}
-          >
-            <img src={book.avatar} alt={book.name} className='book-list-img' />
-            <h2 className='book-list-title'>{book.name}</h2>
-            <p className='book-list-author'>{book.author}</p>
-            <p className='book-list-desc'>{book.description}</p>
-            <p className='book-list-genre'>Genre: {book.genre}</p>
-          </li>
-        ))}
+        {currentBooks.length > 0 ? (
+          currentBooks.map((book) => (
+            <li
+              key={book.id}
+              className='book-list-item'
+              onClick={() => navigate(`/book/${book.id}`)}
+            >
+              <img
+                src={book.avatar}
+                alt={book.name}
+                className='book-list-img'
+              />
+              <h2 className='book-list-title'>{book.name}</h2>
+              <p className='book-list-author'>{book.author}</p>
+              <p className='book-list-desc'>{book.description}</p>
+              <p className='book-list-genre'>Genre: {book.genre}</p>
+            </li>
+          ))
+        ) : (
+          <h3 className='no-books'>Không có sách nào !!!</h3>
+        )}
       </ul>
 
       {/* Pagination */}
