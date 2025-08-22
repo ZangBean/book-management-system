@@ -61,6 +61,9 @@
   padding: 0;
   margin-top: 80px;
 }
+.book-list h3 {
+  color: #e63946;
+}
 
 .book-list-item {
   background: #f9f9f9;
@@ -189,6 +192,10 @@
   text-align: center;
 }
 
+/* .modal-form {
+  display: flex;
+} */
+
 .modal-form input,
 .modal-form textarea {
   width: 100%;
@@ -230,3 +237,44 @@
   background: #c82333;
 }
 
+.dropdown {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.dropdown-toggle {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+  margin-top: 2px;
+}
+
+.dropdown-item {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background: #f0f0f0;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+}

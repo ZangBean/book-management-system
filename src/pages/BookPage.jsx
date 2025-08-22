@@ -1,19 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import { useNavigate } from 'react-router-dom'
+import { FaBomb, FaCircle } from 'react-icons/fa'
 
-const BookPage = ({ books }) => {
+const BookPage = ({ books, filtereds }) => {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 
-  // Tổng số trang
+  // Total number of pages
   const totalPages = Math.ceil(books.length / itemsPerPage)
-
+  useEffect(() => {
+    // Reset current page when books change
+    setCurrentPage(1)
+    return () => {
+      // Cleanup if needed
+    }
+  }, [books, filtereds])
   // Tính start và end index
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
@@ -21,7 +28,7 @@ const BookPage = ({ books }) => {
 
   return (
     <div className='book-page container'>
-      <h1 className='page-title'>Sách nổi bật </h1>
+      <h1 className='page-title'>Featured Books</h1>
       {/* Slider */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
@@ -38,7 +45,7 @@ const BookPage = ({ books }) => {
         }}
         className='book-slider'
       >
-        {books.slice(1, 10).map((book) => (
+        {filtereds.slice(1, 10).map((book) => (
           <SwiperSlide
             key={book.id}
             onClick={() => navigate(`/book/${book.id}`)}
@@ -54,21 +61,30 @@ const BookPage = ({ books }) => {
         ))}
       </Swiper>
 
-      {/* List dưới slider có phân trang */}
+      {/* Book list below slider with pagination */}
+      <h1 className='page-title'>New Books</h1>
       <ul className='book-list'>
-        {currentBooks.map((book) => (
-          <li
-            key={book.id}
-            className='book-list-item'
-            onClick={() => navigate(`/book/${book.id}`)}
-          >
-            <img src={book.avatar} alt={book.name} className='book-list-img' />
-            <h2 className='book-list-title'>{book.name}</h2>
-            <p className='book-list-author'>{book.author}</p>
-            <p className='book-list-desc'>{book.description}</p>
-            <p className='book-list-genre'>Genre: {book.genre}</p>
-          </li>
-        ))}
+        {currentBooks.length > 0 ? (
+          currentBooks.map((book) => (
+            <li
+              key={book.id}
+              className='book-list-item'
+              onClick={() => navigate(`/book/${book.id}`)}
+            >
+              <img
+                src={book.avatar}
+                alt={book.name}
+                className='book-list-img'
+              />
+              <h2 className='book-list-title'>{book.name}</h2>
+              <p className='book-list-author'>{book.author}</p>
+              <p className='book-list-desc'>{book.description}</p>
+              <p className='book-list-genre'>Genre: {book.genre}</p>
+            </li>
+          ))
+        ) : (
+          <h3 className='no-books'>Not find !!!</h3>
+        )}
       </ul>
 
       {/* Pagination */}

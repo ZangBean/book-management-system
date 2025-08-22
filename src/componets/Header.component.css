@@ -30,22 +30,110 @@
 }
 
 .search-input {
-  padding: 5px 10px;
+  padding: 5px 40px 5px 15px;
   border-radius: 20px;
   border: 1px solid #ccc;
-  flex-grow: 1;
-  max-width: 300px;
   background-color: #fff;
+  width: 300px;
+}
+.search-button {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  top: -2%;
+  right: 4px;
+  padding: 5px 10px;
 }
 
-.circle-button {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background-color: #007bff;
-  color: #fff;
-  font-size: 24px;
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  max-height: 250px;
+  /* overflow-y: auto; */
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  z-index: 1000;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
   cursor: pointer;
 }
 
+.suggestion-item:hover {
+  background: #f0f0f0;
+}
+
+.move-area {
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+}
+
+.move-area svg {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #37a447;
+  transition: transform 0.5s ease;
+}
+
+.move-area:hover svg {
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+
+.move-area::after {
+  content: "Click to add books";
+  position: absolute;
+  top: 50%;
+  left: 120%;
+  transform: translateY(-50%);
+  background-color: #37a447;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 16px;
+  white-space: nowrap;
+  font-size: 14px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.move-area::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 80%;
+  transform: translateY(-50%);
+  border-width: 14px;
+  border-style: solid;
+  border-color: transparent #37a447 transparent transparent;
+  opacity: 0;
+}
+
+.move-area:hover::after,
+.move-area:hover::before {
+  opacity: 1;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  color: #37a447;
+  border-bottom: 5px solid #37a447;
+}
