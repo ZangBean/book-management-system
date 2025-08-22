@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import "./Header.component.css";
 import logo from "../assets/logo.png";
@@ -6,10 +6,10 @@ import ModalAddBook from "../pages/BookForm";
 import { FaSearch } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 
-const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
+const Header = ({ books, setBooks }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [allBooks] = useState(filtereds);
+  const [allBooks] = useState(books);
   const [suggestions, setSuggestions] = useState([]);
   const moveAreaRef = useRef(null);
 
