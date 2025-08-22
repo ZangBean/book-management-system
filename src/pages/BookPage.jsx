@@ -14,14 +14,17 @@ const BookPage = ({ books, filtereds }) => {
 
   // Total number of pages
   const totalPages = Math.ceil(books.length / itemsPerPage)
-
+  useEffect(() => {
+    // Reset current page when books change
+    setCurrentPage(1)
+    return () => {
+      // Cleanup if needed
+    }
+  }, [books, filtereds])
   // Tính start và end index
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
   const currentBooks = books.slice(startIndex, endIndex)
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [books])
 
   return (
     <div className='book-page container'>
@@ -42,21 +45,20 @@ const BookPage = ({ books, filtereds }) => {
         }}
         className='book-slider'
       >
-        {filtereds &&
-          filtereds.slice(1, 10).map((book) => (
-            <SwiperSlide
-              key={book.id}
-              onClick={() => navigate(`/book/${book.id}`)}
-            >
-              <div className='book-card'>
-                <img src={book.avatar} alt={book.name} className='book-img' />
-                <h2 className='book-title'>{book.name}</h2>
-                <p className='book-author'>{book.author}</p>
-                <p className='book-genre'>{book.genre}</p>
-                <p className='book-price'>${book.price}</p>
-              </div>
-            </SwiperSlide>
-          ))}
+        {filtereds.slice(1, 10).map((book) => (
+          <SwiperSlide
+            key={book.id}
+            onClick={() => navigate(`/book/${book.id}`)}
+          >
+            <div className='book-card'>
+              <img src={book.avatar} alt={book.name} className='book-img' />
+              <h2 className='book-title'>{book.name}</h2>
+              <p className='book-author'>{book.author}</p>
+              <p className='book-genre'>{book.genre}</p>
+              <p className='book-price'>${book.price}</p>
+            </div>
+          </SwiperSlide>
+        ))}
       </Swiper>
 
       {/* Book list below slider with pagination */}
@@ -81,7 +83,7 @@ const BookPage = ({ books, filtereds }) => {
             </li>
           ))
         ) : (
-          <h3>Not Find !!!</h3>
+          <h3 className='no-books'>Không có sách nào !!!</h3>
         )}
       </ul>
 
