@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { NavLink } from "react-router-dom";
-import "./Header.component.css";
-import logo from "../assets/logo.png";
-import ModalAddBook from "../pages/BookForm";
-import { FaSearch } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from 'react'
+import { NavLink } from 'react-router-dom'
+import './Header.component.css'
+import logo from '../assets/logo.png'
+import ModalAddBook from '../pages/BookForm'
+import { FaSearch } from 'react-icons/fa'
 
-
-const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
+const Header = ({ books, setBooks }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [allBooks] = useState(filtereds)
+  const [allBooks] = useState(books)
   const [suggestions, setSuggestions] = useState([])
   const moveAreaRef = useRef(null)
 
@@ -74,26 +73,26 @@ const Header = ({ books, setBooks, filtereds, setFiltereds }) => {
   }, [])
 
   return (
-    <header className="header-content">
-      <div className="header container">
-        <NavLink to="/" className="logo-link">
-          <img src={logo} alt="logo" />
+    <header className='header-content'>
+      <div className='header container'>
+        <NavLink to='/' className='logo-link'>
+          <img src={logo} alt='logo' />
         </NavLink>
         <NavLink
-          to="/"
-          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+          to='/'
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
           Home
         </NavLink>
         <NavLink
-          to="/genre"
-          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+          to='/genre'
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
           Genre
         </NavLink>
         <NavLink
-          to="/about"
-          className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+          to='/about'
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
         >
           About
         </NavLink>
