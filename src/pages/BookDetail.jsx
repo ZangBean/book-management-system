@@ -4,6 +4,9 @@ import { getBookById, deleteBook } from '../services/bookService'
 import '../styles/BookDetail.css'
 import Loading from '../componets/Loading'
 import ModalAddBook from '../pages/BookForm'
+import renderStars from '../ultils/renderStars'
+import { FaEye } from 'react-icons/fa6'
+import { formatNumber } from '../ultils/formatNumber'
 
 const BookDetail = ({ books, setBooks }) => {
   const [book, setBook] = useState(null)
@@ -86,10 +89,10 @@ const BookDetail = ({ books, setBooks }) => {
           <strong>Description:</strong> {book.description}
         </p>
         <p>
-          <strong>Total views:</strong> {book.view}
+          <strong>Total views:</strong> <FaEye /> {formatNumber(book.view)}
         </p>
         <p>
-          <strong>Rating:</strong> {book.rate} ⭐
+          <strong>Rating:</strong> {renderStars(book.rate)}
         </p>
 
         <div className='button-group'>

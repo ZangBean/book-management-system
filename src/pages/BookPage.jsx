@@ -5,7 +5,13 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import { useNavigate } from 'react-router-dom'
-import { FaArrowDownAZ, FaArrowDownZA, FaArrowUpZA } from 'react-icons/fa6'
+import {
+  FaArrowDown19,
+  FaArrowDownAZ,
+  FaArrowDownZA,
+  FaArrowUp91,
+  FaArrowUpZA,
+} from 'react-icons/fa6'
 
 const BookPage = ({ books, filtereds }) => {
   const navigate = useNavigate()
@@ -87,9 +93,9 @@ const BookPage = ({ books, filtereds }) => {
               className='filter-button'
             >
               {sortOrder === 'asc' ? (
-                <FaArrowUpZA className='' />
+                <FaArrowUp91 className='' />
               ) : (
-                <FaArrowDownAZ className='rotate' />
+                <FaArrowDown19 className='rotate' />
               )}
             </button>
           </div>
