@@ -6,15 +6,14 @@ import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
 import {
-  FaArrowDownAZ,
-  FaArrowUpZA,
   FaBook,
   FaBookAtlas,
   FaArrowUp91,
-  FaArrowDown19
+  FaArrowDown19,
+  FaEye,
+  FaDollarSign,
 } from "react-icons/fa6";
 import "../styles/BookPage.css";
-
 
 const BookPage = ({ books, filtereds }) => {
   const navigate = useNavigate();
@@ -101,11 +100,10 @@ const BookPage = ({ books, filtereds }) => {
               }
               className="filter-button"
             >
-
-              {sortOrder === 'asc' ? (
-                <FaArrowUp91 className='' />
+              {sortOrder === "asc" ? (
+                <FaArrowUp91 className="" />
               ) : (
-                <FaArrowDown19 className='rotate' />
+                <FaArrowDown19 className="rotate" />
               )}
             </button>
           </div>
@@ -140,6 +138,14 @@ const BookPage = ({ books, filtereds }) => {
               className="book-list-item"
               onClick={() => navigate(`/book/${book.id}`)}
             >
+              <div className="box">
+                <div className="book-list-view">
+                  <FaEye /> <p>{book.view}</p>
+                </div>
+                <div className="book-list-dollar">
+                  <FaDollarSign /> <p>{book.price}</p>
+                </div>
+              </div>
               <img
                 src={book.avatar}
                 alt={book.name}
