@@ -1,7 +1,58 @@
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* căn giữa tiêu đề và filter */
+}
+
 .page-title {
   font-size: 28px;
   font-weight: bold;
-  margin-top: 60px;
+  margin-top: 20px;
+}
+
+.filter-container {
+  display: flex;
+  gap: 20px; /* khoảng cách giữa Sort và Filter */
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.filter-select,
+.filter-button {
+  height: 36px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-select {
+  padding: 0 12px;
+}
+
+.filter-button {
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.rotate {
+  color: #007bff;
+  font-size: 16px;
 }
 
 /* Slider */
