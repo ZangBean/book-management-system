@@ -5,30 +5,41 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import { useNavigate } from 'react-router-dom'
-import { FaBomb, FaCircle } from 'react-icons/fa'
+import { FaArrowDownAZ, FaArrowDownZA, FaArrowUpZA } from 'react-icons/fa6'
 
 const BookPage = ({ books, filtereds }) => {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
+  const [selectedRate, setSelectedRate] = useState('all') // lọc rate
+  const [sortOrder, setSortOrder] = useState('asc') // sắp xếp theo view
   const itemsPerPage = 10
 
-  // Total number of pages
-  const totalPages = Math.ceil(books.length / itemsPerPage)
+  // Reset page khi books thay đổi
   useEffect(() => {
-    // Reset current page when books change
     setCurrentPage(1)
-    return () => {
-      // Cleanup if needed
-    }
-  }, [books, filtereds])
+  }, [books, filtereds, selectedRate, sortOrder])
+
+  // Lọc theo rate
+  const filteredByRate =
+    selectedRate === 'all'
+      ? books
+      : books.filter((b) => Math.floor(b.rate) === parseInt(selectedRate))
+  // Sắp xếp theo view
+  const sortedBooks = [...filteredByRate].sort((a, b) => {
+    return sortOrder === 'asc' ? a.view - b.view : b.view - a.view
+  })
+  // Tổng số trang
+  const totalPages = Math.ceil(filteredByRate.length / itemsPerPage)
+
   // Tính start và end index
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
-  const currentBooks = books.slice(startIndex, endIndex)
+  const currentBooks = sortedBooks.slice(startIndex, endIndex)
 
   return (
     <div className='book-page container'>
       <h1 className='page-title'>Featured Books</h1>
+
       {/* Slider */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
@@ -61,8 +72,49 @@ const BookPage = ({ books, filtereds }) => {
         ))}
       </Swiper>
 
-      {/* Book list below slider with pagination */}
-      <h1 className='page-title'>New Books</h1>
+      <div className='list-header'>
+        <h1 className='page-title'>Lists Books</h1>
+
+        <div className='filter-container'>
+          <div className='filter-group'>
+            <label htmlFor='sort-order' className='filter-label'>
+              Sort by views:
+            </label>
+            <button
+              onClick={() =>
+                setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+              }
+              className='filter-button'
+            >
+              {sortOrder === 'asc' ? (
+                <FaArrowUpZA className='' />
+              ) : (
+                <FaArrowDownAZ className='rotate' />
+              )}
+            </button>
+          </div>
+
+          <div className='filter-group'>
+            <label htmlFor='rate-filter' className='filter-label'>
+              Filter :
+            </label>
+            <select
+              value={selectedRate}
+              onChange={(e) => setSelectedRate(e.target.value)}
+              className='filter-select'
+            >
+              <option value='all'>All</option>
+              <option value='1'> Very Bad</option>
+              <option value='2'> Bad</option>
+              <option value='3'> Nomal</option>
+              <option value='4'> Good</option>
+              <option value='5'> Very Good</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Book list with pagination */}
       <ul className='book-list'>
         {currentBooks.length > 0 ? (
           currentBooks.map((book) => (
