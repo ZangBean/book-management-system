@@ -1,0 +1,26 @@
+.genre-page > ul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.genre-page > ul li {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 30px;
+  transition: all 0.3s;
+}
+
+.genre-page ul .active {
+  background-color: #5bc76b;
+  color: #fff;
+  font-weight: bold;
+}
+
+.genre-page > ul li:not(.active):hover {
+  background-color: #b0e6b8;
+  cursor: pointer;
+}
