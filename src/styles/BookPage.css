@@ -48,7 +48,7 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  margin: 40px 0 60px;
+  margin: 40px 0;
   font-family: sans-serif;
 }
 
@@ -132,14 +132,16 @@
   gap: 20px;
   list-style: none;
   padding: 0;
-  margin-top: 20px;
+  margin: 20px 0 40px;
 }
 .book-list h3 {
   color: #e63946;
+  height: 100px;
 }
 
 .book-list-item {
   background: #fff;
+  border: 1px solid #e0e0e0;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -257,17 +259,25 @@
   transition: all 0.3s;
 }
 
+.page-title .filter-button:hover,
 .page-title .random-button:hover {
   cursor: pointer;
   background-color: #6fda7f;
 }
+
+.page-title .filter-button:hover svg,
 .page-title .random-button:hover svg {
   color: #fff;
 }
 
+.page-title .filter-button svg,
 .page-title .random-button svg {
   font-size: 30px;
   transition: all 0.3s;
+}
+
+.filter-select {
+  outline: none;
 }
 
 .page-title h1::after {

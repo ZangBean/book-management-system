@@ -51,9 +51,18 @@ function App() {
         />
         <Route
           path="/book/:id"
-          element={<BookDetail books={books} setBooks={setBooks} />}
+          element={
+            <BookDetail
+              books={books}
+              setBooks={setBooks}
+              filtereds={filtereds}
+            />
+          }
         />
-        <Route path="/genre" element={<GenrePage books={books} />} />
+        <Route
+          path="/genre"
+          element={<GenrePage books={books} filtereds={filtereds} />}
+        />
       </Routes>
       <Footer />
     </BrowserRouter>

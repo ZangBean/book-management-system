@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BookRandom from "../componets/BookRandom";
+import { FaBookBookmark } from "react-icons/fa6";
+import "../styles/GenrePage.css";
 
-const GenrePage = ({ books }) => {
+const GenrePage = ({ books, filtereds }) => {
   const navigate = useNavigate();
   const genres = [...new Set(books.map((book) => book.genre))];
 
@@ -32,10 +35,7 @@ const GenrePage = ({ books }) => {
           <li
             key={index}
             onClick={() => handleSelectGenre(genre)}
-            style={{
-              cursor: "pointer",
-              fontWeight: selectedGenre === genre ? "bold" : "normal",
-            }}
+            className={selectedGenre === genre ? "active" : ""}
           >
             {genre}
           </li>
@@ -44,7 +44,12 @@ const GenrePage = ({ books }) => {
 
       {selectedGenre && (
         <div className="book-page container">
-          <h2>Books in "{selectedGenre}"</h2>
+          <div className="page-title">
+            <div className="title-box">
+              <FaBookBookmark />
+              <h1>Books in "{selectedGenre}"</h1>
+            </div>
+          </div>
           <ul className="book-list container">
             {currentBooks.map((book) => (
               <li
@@ -78,7 +83,7 @@ const GenrePage = ({ books }) => {
               {[...Array(totalPages)].map((_, index) => (
                 <button
                   key={index + 1}
-                  className={currentPage === index + 1 ? 'active' : ''}
+                  className={currentPage === index + 1 ? "active" : ""}
                   onClick={() => setCurrentPage(index + 1)}
                 >
                   {index + 1}
@@ -93,6 +98,7 @@ const GenrePage = ({ books }) => {
               </button>
             </div>
           )}
+          <BookRandom filtereds={filtereds} />
         </div>
       )}
     </div>

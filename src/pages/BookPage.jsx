@@ -194,7 +194,7 @@ const BookPage = ({ books, filtereds }) => {
           </button>
         </div>
       )}
-      <BookRandom books={books} />
+      <BookRandom filtereds={filtereds} />
     </div>
   );
 };

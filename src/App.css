@@ -49,20 +49,6 @@
   font-size: 16px;
 }
 
-.genre-page > ul {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  padding: 20px 0;
-  text-align: center;
-}
-
-.genre-page > ul li {
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 30px;
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;
