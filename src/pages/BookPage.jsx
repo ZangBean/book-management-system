@@ -5,6 +5,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
+import BookRandom from "../componets/BookRandom";
 import {
   FaBook,
   FaBookAtlas,
@@ -47,8 +48,10 @@ const BookPage = ({ books, filtereds }) => {
   return (
     <div className="book-page container">
       <div className="page-title">
-        <FaBook />
-        <h1>Featured Books</h1>
+        <div className="title-box">
+          <FaBook />
+          <h1>Featured Books</h1>
+        </div>
       </div>
 
       {/* Slider */}
@@ -85,46 +88,47 @@ const BookPage = ({ books, filtereds }) => {
 
       <div className="list-header">
         <div className="page-title">
-          <FaBookAtlas />
-          <h1>Lists Books</h1>
-        </div>
-
-        <div className="filter-container">
-          <div className="filter-group">
-            <label htmlFor="sort-order" className="filter-label">
-              Sort by views:
-            </label>
-            <button
-              onClick={() =>
-                setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
-              }
-              className="filter-button"
-            >
-              {sortOrder === "asc" ? (
-                <FaArrowUp91 className="" />
-              ) : (
-                <FaArrowDown19 className="rotate" />
-              )}
-            </button>
+          <div className="title-box">
+            <FaBookAtlas />
+            <h1>List of Books</h1>
           </div>
+          <div className="filter-container">
+            <div className="filter-group">
+              <label htmlFor="sort-order" className="filter-label">
+                Sort by views:
+              </label>
+              <button
+                onClick={() =>
+                  setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
+                }
+                className="filter-button"
+              >
+                {sortOrder === "asc" ? (
+                  <FaArrowUp91 className="" />
+                ) : (
+                  <FaArrowDown19 className="rotate" />
+                )}
+              </button>
+            </div>
 
-          <div className="filter-group">
-            <label htmlFor="rate-filter" className="filter-label">
-              Filter :
-            </label>
-            <select
-              id="rate-filter"
-              value={selectedRate}
-              onChange={(e) => setSelectedRate(e.target.value)}
-              className="filter-select"
-            >
-              <option value="all">All</option>
-              <option value="1"> Very Bad</option>
-              <option value="2"> Bad</option>
-              <option value="3"> Nomal</option>
-              <option value="4"> Good</option>
-              <option value="5"> Very Good</option>
-            </select>
+            <div className="filter-group">
+              <label htmlFor="rate-filter" className="filter-label">
+                Filter :
+              </label>
+              <select
+                id="rate-filter"
+                value={selectedRate}
+                onChange={(e) => setSelectedRate(e.target.value)}
+                className="filter-select"
+              >
+                <option value="all">All</option>
+                <option value="1"> Very Bad</option>
+                <option value="2"> Bad</option>
+                <option value="3"> Nomal</option>
+                <option value="4"> Good</option>
+                <option value="5"> Very Good</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -190,6 +194,7 @@ const BookPage = ({ books, filtereds }) => {
           </button>
         </div>
       )}
+      <BookRandom books={books} />
     </div>
   );
 };
