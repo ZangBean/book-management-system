@@ -199,6 +199,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  line-height: 1.5;
 }
 
 .book-list-dollar {
@@ -213,6 +214,7 @@
   border-radius: 12px;
   display: flex;
   align-items: center;
+  line-height: 1.5;
 }
 
 .book-list-item .box {
@@ -231,7 +233,7 @@
 
 .page-title h1 {
   font-size: 24px;
-  padding: 5px 5px 5px 34px;
+  padding: 5px 10px 5px 34px;
   color: #fff;
   background-color: #5bc76b;
   position: relative;
@@ -256,10 +258,10 @@
 .page-title h1::before {
   content: "";
   position: absolute;
-  right: -46px;
+  right: -50px;
   top: 50%;
   transform: translateY(-50%);
-  border-width: 23px;
+  border-width: 22px;
   border-style: solid;
   border-color: transparent transparent transparent #5bc76b;
 }

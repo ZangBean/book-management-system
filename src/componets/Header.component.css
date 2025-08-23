@@ -99,7 +99,8 @@
 }
 
 .move-area::after {
-  content: 'Click to add books';
+  content: "Click to add books";
+  display: none;
   position: absolute;
   top: 50%;
   left: 120%;
@@ -116,12 +117,13 @@
 }
 
 .move-area::before {
-  content: '';
+  content: "";
+  display: none;
   position: absolute;
   top: 50%;
-  left: 80%;
+  left: 84%;
   transform: translateY(-50%);
-  border-width: 14px;
+  border-width: 12px;
   border-style: solid;
   border-color: transparent #37a447 transparent transparent;
   opacity: 0;
@@ -130,6 +132,7 @@
 .move-area:hover::after,
 .move-area:hover::before {
   opacity: 1;
+  display: block;
 }
 
 .nav-link.active {
@@ -154,7 +157,7 @@
 }
 
 /* --------- PC (≥1200px) --------- */
-@media (min-width: 1200px) {
+@media (max-width: 1200px) {
   .header {
     gap: 30px;
   }
@@ -238,4 +241,3 @@
     padding-right: 20px;
   }
 }
-
