@@ -20,13 +20,30 @@ const BookPage = ({ books, filtereds }) => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRate, setSelectedRate] = useState("all");
-  const [sortOrder, setSortOrder] = useState("asc"); // Sắp xếp theo view
-  const itemsPerPage = 10;
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  // Cập nhật itemsPerPage dựa trên kích thước màn hình
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      if (window.innerWidth <= 1024) {
+        setItemsPerPage(6); // Mobile
+      } else if (window.innerWidth <= 1200) {
+        setItemsPerPage(8); // Tablet
+      } else {
+        setItemsPerPage(10); // Desktop
+      }
+    };
+
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
+  }, []);
 
   // Reset page khi books thay đổi
   useEffect(() => {
     setCurrentPage(1);
-  }, [books, filtereds, selectedRate, sortOrder]);
+  }, [books, filtereds, selectedRate, sortOrder, itemsPerPage]);
 
   // Lọc theo rate
   const filteredByRate =
@@ -44,6 +61,33 @@ const BookPage = ({ books, filtereds }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentBooks = sortedBooks.slice(startIndex, endIndex);
+
+  // Tạo mảng nút phân trang giới hạn
+  const maxPageButtons = 5; // Số nút tối đa hiển thị
+  const getPaginationButtons = () => {
+    const buttons = [];
+    const half = Math.floor(maxPageButtons / 2);
+    let startPage = Math.max(1, currentPage - half);
+    let endPage = Math.min(totalPages, startPage + maxPageButtons - 1);
+
+    // Điều chỉnh startPage nếu endPage gần cuối
+    if (endPage - startPage + 1 < maxPageButtons) {
+      startPage = Math.max(1, endPage - maxPageButtons + 1);
+    }
+
+    // Thêm nút trang
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(i);
+    }
+
+    // Thêm dấu chấm lửng nếu cần
+    const showLeftDots = startPage > 1;
+    const showRightDots = endPage < totalPages;
+
+    return { buttons, showLeftDots, showRightDots };
+  };
+
+  const { buttons, showLeftDots, showRightDots } = getPaginationButtons();
 
   return (
     <div className="book-page container">
@@ -66,7 +110,8 @@ const BookPage = ({ books, filtereds }) => {
         breakpoints={{
           320: { slidesPerView: 1 },
           640: { slidesPerView: 2 },
-          1024: { slidesPerView: 4 },
+          1200: { slidesPerView: 3 },
+          1600: { slidesPerView: 4 },
         }}
         className="book-slider"
       >
@@ -104,7 +149,7 @@ const BookPage = ({ books, filtereds }) => {
                 className="filter-button"
               >
                 {sortOrder === "asc" ? (
-                  <FaArrowUp91 className="" />
+                  <FaArrowUp91 />
                 ) : (
                   <FaArrowDown19 className="rotate" />
                 )}
@@ -113,7 +158,7 @@ const BookPage = ({ books, filtereds }) => {
 
             <div className="filter-group">
               <label htmlFor="rate-filter" className="filter-label">
-                Filter :
+                Filter:
               </label>
               <select
                 id="rate-filter"
@@ -122,11 +167,11 @@ const BookPage = ({ books, filtereds }) => {
                 className="filter-select"
               >
                 <option value="all">All</option>
-                <option value="1"> Very Bad</option>
-                <option value="2"> Bad</option>
-                <option value="3"> Nomal</option>
-                <option value="4"> Good</option>
-                <option value="5"> Very Good</option>
+                <option value="1">Very Bad</option>
+                <option value="2">Bad</option>
+                <option value="3">Normal</option>
+                <option value="4">Good</option>
+                <option value="5">Very Good</option>
               </select>
             </div>
           </div>
@@ -162,7 +207,7 @@ const BookPage = ({ books, filtereds }) => {
             </li>
           ))
         ) : (
-          <h3 className="no-books">Not find !!!</h3>
+          <h3 className="no-books">Not found!</h3>
         )}
       </ul>
 
@@ -176,15 +221,17 @@ const BookPage = ({ books, filtereds }) => {
             ⬅
           </button>
 
-          {[...Array(totalPages)].map((_, index) => (
+          {showLeftDots && <span>...</span>}
+          {buttons.map((page) => (
             <button
-              key={index + 1}
-              className={currentPage === index + 1 ? "active" : ""}
-              onClick={() => setCurrentPage(index + 1)}
+              key={page}
+              className={currentPage === page ? "active" : ""}
+              onClick={() => setCurrentPage(page)}
             >
-              {index + 1}
+              {page}
             </button>
           ))}
+          {showRightDots && <span>...</span>}
 
           <button
             disabled={currentPage === totalPages}
