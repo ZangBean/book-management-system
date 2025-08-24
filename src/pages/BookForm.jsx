@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createBook, updateBook } from "../services/bookService";
+import "../styles/BookForm.css";
 
 const ModalAddBook = ({
   isOpen,
@@ -23,9 +24,8 @@ const ModalAddBook = ({
   });
   const [error, setError] = useState(null);
   const [isGenreOpen, setIsGenreOpen] = useState(false);
-  const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const modalRef = useRef(null);
   const genreRef = useRef(null);
-  const statusRef = useRef(null);
 
   useEffect(() => {
     if (editBook) {
@@ -45,16 +45,17 @@ const ModalAddBook = ({
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (genreRef.current && !genreRef.current.contains(e.target)) {
-        setIsGenreOpen(false);
-      }
-      if (statusRef.current && !statusRef.current.contains(e.target)) {
-        setIsStatusOpen(false);
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(e.target) &&
+        !genreRef.current?.contains(e.target)
+      ) {
+        onClose();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [onClose]);
 
   if (!isOpen) return null;
 
@@ -66,10 +67,13 @@ const ModalAddBook = ({
     }));
   };
 
+  const handleStatusChange = (value) => {
+    setFormData((prev) => ({ ...prev, status: value }));
+  };
+
   const handleSelect = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (name === "genre") setIsGenreOpen(false);
-    if (name === "status") setIsStatusOpen(false);
   };
 
   const handleSubmit = async (e) => {
@@ -114,7 +118,7 @@ const ModalAddBook = ({
 
   return (
     <div className="modal-overlay">
-      <div className="modal">
+      <div className="modal" ref={modalRef}>
         <h2>{editBook ? "Edit Book" : "Add New Book"}</h2>
         <form onSubmit={handleSubmit} className="modal-form">
           <div>
@@ -138,15 +142,7 @@ const ModalAddBook = ({
               onChange={handleChange}
               required
             />
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              placeholder="Description"
-              value={formData.description}
-              onChange={handleChange}
-            />
-            <label htmlFor="">Genre</label>
+            <label htmlFor="genre">Genre</label>
             <div className="dropdown" ref={genreRef}>
               <div
                 className="dropdown-toggle"
@@ -169,30 +165,28 @@ const ModalAddBook = ({
               )}
             </div>
             {error && <p className="error">{error}</p>}
-            <label htmlFor="">Status</label>
-            <div className="dropdown" ref={statusRef}>
-              <div
-                className="dropdown-toggle"
-                onClick={() => setIsStatusOpen(!isStatusOpen)}
-              >
-                {formData.status === "available" ? "Available" : "Unavailable"}
-              </div>
-              {isStatusOpen && (
-                <ul className="dropdown-menu">
-                  <li
-                    className="dropdown-item"
-                    onClick={() => handleSelect("status", "available")}
-                  >
-                    Available
-                  </li>
-                  <li
-                    className="dropdown-item"
-                    onClick={() => handleSelect("status", "unavailable")}
-                  >
-                    Unavailable
-                  </li>
-                </ul>
-              )}
+            <label>Status</label>
+            <div className="status">
+              <label>
+                <span> Available</span>
+                <input
+                  type="radio"
+                  name="status"
+                  value="available"
+                  checked={formData.status === "available"}
+                  onChange={() => handleStatusChange("available")}
+                />
+              </label>
+              <label>
+                <span>Unavailable</span>
+                <input
+                  type="radio"
+                  name="status"
+                  value="unavailable"
+                  checked={formData.status === "unavailable"}
+                  onChange={() => handleStatusChange("unavailable")}
+                />
+              </label>
             </div>
           </div>
           <div>
@@ -218,11 +212,12 @@ const ModalAddBook = ({
             <label htmlFor="price">Price</label>
             <input
               id="price"
-              type="text"
+              type="number"
               name="price"
               placeholder="Price"
               value={formData.price}
               onChange={handleChange}
+              step="0.01"
             />
             <label htmlFor="avatar">Avatar URL</label>
             <input
@@ -231,6 +226,16 @@ const ModalAddBook = ({
               name="avatar"
               placeholder="Avatar URL"
               value={formData.avatar}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="description">
+            <label htmlFor="description">Description</label>
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Description"
+              value={formData.description}
               onChange={handleChange}
             />
           </div>
