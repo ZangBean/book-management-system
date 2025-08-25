@@ -4,28 +4,29 @@ import './Header.component.css'
 import logo from '../assets/logo.png'
 import ModalAddBook from '../pages/BookForm'
 import { FaSearch, FaTimes } from 'react-icons/fa'
-import { FaPlus, FaBars, FaTimeline } from 'react-icons/fa6'
+import { FaPlus, FaBars } from 'react-icons/fa6'
+import { useDispatch, useSelector } from 'react-redux'
+import { addBook, filterBooks, resetBooks } from '../redux/slices/bookSlice'
 
-const Header = ({ books, setBooks }) => {
+const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [allBooks] = useState(books)
   const [suggestions, setSuggestions] = useState([])
-  const [isMenuOpen, setIsMenuOpen] = useState(false) // 👈 thêm state menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   const moveAreaRef = useRef(null)
+  const dispatch = useDispatch()
+  const books = useSelector((state) => state.books.items)
 
   const handleAddBook = (newBook) => {
-    setBooks((prev) => [newBook, ...prev])
+    dispatch(addBook(newBook)) // thêm vào Redux
   }
 
   const handleSearch = () => {
     if (searchTerm.trim() === '') {
-      setBooks(allBooks)
+      dispatch(resetBooks(books)) // reset nếu rỗng
     } else {
-      const filteredBooks = allBooks.filter((book) =>
-        book.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      setBooks(filteredBooks)
+      dispatch(filterBooks(searchTerm)) // gọi reducer filter
     }
     setSuggestions([])
   }
@@ -37,7 +38,7 @@ const Header = ({ books, setBooks }) => {
     if (value.trim() === '') {
       setSuggestions([])
     } else {
-      const filtered = allBooks.filter((book) =>
+      const filtered = books.filter((book) =>
         book.name.toLowerCase().includes(value.toLowerCase())
       )
       setSuggestions(filtered.slice(0, 5))
@@ -47,11 +48,7 @@ const Header = ({ books, setBooks }) => {
   const handleSuggestionClick = (bookName) => {
     setSearchTerm(bookName)
     setSuggestions([])
-    setBooks(
-      allBooks.filter((book) =>
-        book.name.toLowerCase().includes(bookName.toLowerCase())
-      )
-    )
+    dispatch(filterBooks(bookName))
   }
 
   return (
@@ -62,7 +59,7 @@ const Header = ({ books, setBooks }) => {
           <img src={logo} alt='logo' />
         </NavLink>
 
-        {/* Hamburger button */}
+        {/* Hamburger */}
         <button
           className='menu-toggle'
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -70,7 +67,7 @@ const Header = ({ books, setBooks }) => {
           {isMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
 
-        {/* Nav links */}
+        {/* Nav */}
         <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
           <NavLink
             to='/'
@@ -95,7 +92,7 @@ const Header = ({ books, setBooks }) => {
           </NavLink>
         </nav>
 
-        {/* Search box */}
+        {/* Search */}
         <div className='search-container'>
           <input
             type='text'
@@ -104,9 +101,7 @@ const Header = ({ books, setBooks }) => {
             value={searchTerm}
             onChange={handleInputChange}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSearch()
-              }
+              if (e.key === 'Enter') handleSearch()
             }}
           />
           <button onClick={handleSearch}>
@@ -128,7 +123,7 @@ const Header = ({ books, setBooks }) => {
           )}
         </div>
 
-        {/* Add button */}
+        {/* Add */}
         <button
           className='move-area'
           ref={moveAreaRef}
