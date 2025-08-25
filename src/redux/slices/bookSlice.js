@@ -33,24 +33,24 @@ export const removeBook = createAsyncThunk('books/removeBook', async (id) => {
 const bookSlice = createSlice({
   name: 'books',
   initialState: {
-    items: [],
+    items: [], // full dữ liệu gốc (luôn giữ)
+    displayItems: [], // dữ liệu hiển thị (chịu search/filter)
     loading: false,
     error: null,
   },
   reducers: {
-    // nếu cần filter/search local
     filterBooks: (state, action) => {
-      state.items = state.items.filter((book) =>
-        book.name.toLowerCase().includes(action.payload.toLowerCase())
+      const searchTerm = action.payload.toLowerCase()
+      state.displayItems = state.items.filter((book) =>
+        book.name.toLowerCase().includes(searchTerm)
       )
     },
-    resetBooks: (state, action) => {
-      state.items = action.payload // reset từ data gốc
+    resetBooks: (state) => {
+      state.displayItems = state.items
     },
   },
   extraReducers: (builder) => {
     builder
-      // Fetch
       .addCase(fetchBooks.pending, (state) => {
         state.loading = true
         state.error = null
@@ -58,23 +58,30 @@ const bookSlice = createSlice({
       .addCase(fetchBooks.fulfilled, (state, action) => {
         state.loading = false
         state.items = action.payload
+        state.displayItems = action.payload // đồng bộ lần đầu
       })
       .addCase(fetchBooks.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
       })
-      // Add
       .addCase(addBook.fulfilled, (state, action) => {
         state.items.unshift(action.payload)
+        state.displayItems.unshift(action.payload)
       })
-      // Edit
       .addCase(editBook.fulfilled, (state, action) => {
         const index = state.items.findIndex((b) => b.id === action.payload.id)
         if (index !== -1) state.items[index] = action.payload
+
+        const index2 = state.displayItems.findIndex(
+          (b) => b.id === action.payload.id
+        )
+        if (index2 !== -1) state.displayItems[index2] = action.payload
       })
-      // Delete
       .addCase(removeBook.fulfilled, (state, action) => {
         state.items = state.items.filter((b) => b.id !== action.payload)
+        state.displayItems = state.displayItems.filter(
+          (b) => b.id !== action.payload
+        )
       })
   },
 })

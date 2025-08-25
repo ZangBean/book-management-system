@@ -17,21 +17,24 @@ import {
 import '../styles/BookPage.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBooks } from '../redux/slices/bookSlice'
+import Loading from '../componets/Loading'
 
 const BookPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  // Lấy state từ Redux
-  const { items: books, loading, error } = useSelector((state) => state.books)
+  const {
+    items: allBooks,
+    displayItems: reduxBooks,
+    loading,
+    error,
+  } = useSelector((state) => state.books)
 
-  // Local UI state
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedRate, setSelectedRate] = useState('all')
   const [sortOrder, setSortOrder] = useState('asc')
   const [itemsPerPage, setItemsPerPage] = useState(10)
 
-  // Fetch books từ API khi load
   useEffect(() => {
     dispatch(fetchBooks())
   }, [dispatch])
@@ -39,49 +42,44 @@ const BookPage = () => {
   // Responsive itemsPerPage
   useEffect(() => {
     const updateItemsPerPage = () => {
-      if (window.innerWidth <= 1024) {
-        setItemsPerPage(6)
-      } else if (window.innerWidth <= 1200) {
-        setItemsPerPage(8)
-      } else {
-        setItemsPerPage(10)
-      }
+      if (window.innerWidth <= 1024) setItemsPerPage(6)
+      else if (window.innerWidth <= 1200) setItemsPerPage(8)
+      else setItemsPerPage(10)
     }
     updateItemsPerPage()
     window.addEventListener('resize', updateItemsPerPage)
     return () => window.removeEventListener('resize', updateItemsPerPage)
   }, [])
 
-  // Reset page khi thay đổi filter/sort
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [books, selectedRate, sortOrder, itemsPerPage])
+  // Filter + sort local trên reduxBooks
+  const filteredBooks = React.useMemo(() => {
+    let list = [...reduxBooks]
 
-  if (loading) return <p>Loading...</p>
+    if (selectedRate !== 'all') {
+      list = list.filter((b) => Math.floor(b.rate) === parseInt(selectedRate))
+    }
+
+    list.sort((a, b) =>
+      sortOrder === 'asc' ? a.view - b.view : b.view - a.view
+    )
+
+    return list
+  }, [reduxBooks, selectedRate, sortOrder])
+
+  if (loading) return <Loading />
   if (error) return <p>{error}</p>
-  if (!books || books.length === 0) return <p>No books found</p>
+  if (!allBooks.length) return <p>No books found</p>
 
-  // lọc theo rate
-  const filteredByRate =
-    selectedRate === 'all'
-      ? books
-      : books.filter((b) => Math.floor(b.rate) === parseInt(selectedRate))
-
-  // sắp xếp
-  const sortedBooks = [...filteredByRate].sort((a, b) =>
-    sortOrder === 'asc' ? a.view - b.view : b.view - a.view
+  // Pagination
+  const totalPages = Math.ceil(filteredBooks.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const currentBooks = filteredBooks.slice(
+    startIndex,
+    startIndex + itemsPerPage
   )
 
-  // phân trang
-  const totalPages = Math.ceil(filteredByRate.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const endIndex = startIndex + itemsPerPage
-  const currentBooks = sortedBooks.slice(startIndex, endIndex)
-
-  // nút phân trang
   const maxPageButtons = 5
   const getPaginationButtons = () => {
-    const buttons = []
     const half = Math.floor(maxPageButtons / 2)
     let startPage = Math.max(1, currentPage - half)
     let endPage = Math.min(totalPages, startPage + maxPageButtons - 1)
@@ -90,9 +88,8 @@ const BookPage = () => {
       startPage = Math.max(1, endPage - maxPageButtons + 1)
     }
 
-    for (let i = startPage; i <= endPage; i++) {
-      buttons.push(i)
-    }
+    const buttons = []
+    for (let i = startPage; i <= endPage; i++) buttons.push(i)
 
     return {
       buttons,
@@ -105,6 +102,7 @@ const BookPage = () => {
 
   return (
     <div className='book-page container'>
+      {/* Featured Books */}
       <div className='page-title'>
         <div className='title-box'>
           <FaBook />
@@ -112,7 +110,7 @@ const BookPage = () => {
         </div>
       </div>
 
-      {/* Slider */}
+      {/* Swiper luôn dùng allBooks gốc */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={20}
@@ -120,7 +118,7 @@ const BookPage = () => {
         navigation
         pagination={{ clickable: true }}
         autoplay={{ delay: 3000 }}
-        loop={true}
+        loop
         breakpoints={{
           320: { slidesPerView: 1 },
           640: { slidesPerView: 2 },
@@ -129,7 +127,7 @@ const BookPage = () => {
         }}
         className='book-slider'
       >
-        {books.slice(0, 5).map((book) => (
+        {allBooks.slice(0, 5).map((book) => (
           <SwiperSlide
             key={book.id}
             onClick={() => navigate(`/book/${book.id}`)}
@@ -145,7 +143,7 @@ const BookPage = () => {
         ))}
       </Swiper>
 
-      {/* Filter */}
+      {/* List header */}
       <div className='list-header'>
         <div className='page-title'>
           <div className='title-box'>
@@ -203,13 +201,15 @@ const BookPage = () => {
                   <FaDollarSign /> <p>{book.price}</p>
                 </div>
               </div>
+
               <img
                 src={book.avatar}
                 alt={book.name}
                 className='book-list-img'
               />
+
               <h2 className='book-list-title'>{book.name}</h2>
-              <p className='book-list-author'>{book.author}</p>
+              <p className='book-list-author'>Author: {book.author}</p>
               <p className='book-list-desc'>{book.description}</p>
               <p className='book-list-genre'>Genre: {book.genre}</p>
             </li>
@@ -250,8 +250,8 @@ const BookPage = () => {
         </div>
       )}
 
-      {/* Random Section */}
-      <BookRandom filtereds={books} />
+      {/* Random Books */}
+      <BookRandom filtereds={allBooks} />
     </div>
   )
 }
