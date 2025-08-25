@@ -1,72 +1,25 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  BrowserRouter,
-} from "react-router-dom";
-import { useState, useEffect } from "react";
-import Header from "./componets/Header";
-import Footer from "./componets/Footer";
-import BookPage from "./pages/BookPage";
-
-import AboutPage from "./pages/AboutPage";
-import { getBooks } from "./services/bookService";
-import BookDetail from "./pages/BookDetail";
-import GenrePage from "./pages/GenrePage";
-import Loading from "./componets/Loading";
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Header from './componets/Header'
+import Footer from './componets/Footer'
+import BookPage from './pages/BookPage'
+import AboutPage from './pages/AboutPage'
+import BookDetail from './pages/BookDetail'
+import GenrePage from './pages/GenrePage'
 
 function App() {
-  const [books, setBooks] = useState([]);
-  const [filtereds, setFiltereds] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const fetchBooks = async () => {
-    try {
-      setLoading(true);
-      const res = await getBooks();
-      setBooks(res);
-      setFiltereds(res);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchBooks();
-    return () => {};
-  }, []);
-
-  if (loading) return <Loading />;
-  if (error) return <p style={{ color: "red" }}>Lỗi: {error}</p>;
-
   return (
     <BrowserRouter>
-      <Header books={books} setBooks={setBooks} />
+      <Header />
       <Routes>
-        <Route path="/about" element={<AboutPage />} />
-        <Route
-          path="/"
-          element={<BookPage books={books} filtereds={filtereds} />}
-        />
-        <Route
-          path="/book/:id"
-          element={
-            <BookDetail
-              books={books}
-              setBooks={setBooks}
-              filtereds={filtereds}
-            />
-          }
-        />
-        <Route
-          path="/genre"
-          element={<GenrePage books={books} filtereds={filtereds} />}
-        />
+        <Route path='/' element={<BookPage />} />
+        <Route path='/about' element={<AboutPage />} />
+        <Route path='/book/:id' element={<BookDetail />} />
+        <Route path='/genre' element={<GenrePage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App
+
