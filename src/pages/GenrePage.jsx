@@ -4,6 +4,9 @@ import BookRandom from '../componets/BookRandom'
 import { FaBookBookmark } from 'react-icons/fa6'
 import '../styles/GenrePage.css'
 import { useSelector } from 'react-redux'
+import ListBook from '../componets/ListBook'
+import getPaginationButtons from '../ultils/getPagination'
+import PaginationComponent from '../componets/Pagination'
 
 const GenrePage = () => {
   const navigate = useNavigate()
@@ -19,12 +22,15 @@ const GenrePage = () => {
     ? books.filter((book) => book.genre === selectedGenre)
     : []
 
-  const indexOfLastBook = currentPage * booksPerPage
-  const indexOfFirstBook = indexOfLastBook - booksPerPage
-  const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook)
+  // Pagination
+  const totalPages = Math.ceil(filteredBooks.length / 10)
+  const startIndex = (currentPage - 1) * 10
+  const currentBooks = filteredBooks.slice(startIndex, startIndex + 10)
 
-  const totalPages = Math.ceil(filteredBooks.length / booksPerPage)
-
+  const { buttons, showLeftDots, showRightDots } = getPaginationButtons(
+    currentPage,
+    totalPages
+  )
   const handleSelectGenre = (genre) => {
     setSelectedGenre(genre)
     setCurrentPage(1)
@@ -54,51 +60,19 @@ const GenrePage = () => {
           </div>
           <ul className='book-list container'>
             {currentBooks.map((book) => (
-              <li
-                key={book.id}
-                className='book-list-item'
-                onClick={() => navigate(`/book/${book.id}`)}
-              >
-                <img
-                  src={book.avatar}
-                  alt={book.name}
-                  className='book-list-img'
-                  loading='lazy'
-                />
-                <h2 className='book-list-title'>{book.name}</h2>
-                <p className='book-list-author'>{book.author}</p>
-                <p className='book-list-desc'>{book.description}</p>
-                <p className='book-list-genre'>Genre: {book.genre}</p>
-              </li>
+              <ListBook key={book.id} book={book} />
             ))}
           </ul>
 
           {totalPages > 1 && (
-            <div className='pagination'>
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
-              >
-                ⬅
-              </button>
-
-              {[...Array(totalPages)].map((_, index) => (
-                <button
-                  key={index + 1}
-                  className={currentPage === index + 1 ? 'active' : ''}
-                  onClick={() => setCurrentPage(index + 1)}
-                >
-                  {index + 1}
-                </button>
-              ))}
-
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
-              >
-                ➡
-              </button>
-            </div>
+            <PaginationComponent
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              showLeftDots={showLeftDots}
+              buttons={buttons}
+              showRightDots={showRightDots}
+              totalPages={totalPages}
+            />
           )}
           <BookRandom filtereds={books} />
         </div>

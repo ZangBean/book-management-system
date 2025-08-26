@@ -18,10 +18,15 @@ import '../styles/BookPage.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchBooks } from '../redux/slices/bookSlice'
 import Loading from '../componets/Loading'
+import ListBook from '../componets/ListBook'
+import BookCard from '../componets/BookCard'
+import BookFilter from '../componets/BookFilter'
+import PaginationComponent from '../componets/Pagination'
+import getPaginationButtons from '../ultils/getPagination'
 
 const BookPage = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const {
     items: allBooks,
@@ -78,27 +83,10 @@ const BookPage = () => {
     startIndex + itemsPerPage
   )
 
-  const maxPageButtons = 5
-  const getPaginationButtons = () => {
-    const half = Math.floor(maxPageButtons / 2)
-    let startPage = Math.max(1, currentPage - half)
-    let endPage = Math.min(totalPages, startPage + maxPageButtons - 1)
-
-    if (endPage - startPage + 1 < maxPageButtons) {
-      startPage = Math.max(1, endPage - maxPageButtons + 1)
-    }
-
-    const buttons = []
-    for (let i = startPage; i <= endPage; i++) buttons.push(i)
-
-    return {
-      buttons,
-      showLeftDots: startPage > 1,
-      showRightDots: endPage < totalPages,
-    }
-  }
-
-  const { buttons, showLeftDots, showRightDots } = getPaginationButtons()
+  const { buttons, showLeftDots, showRightDots } = getPaginationButtons(
+    currentPage,
+    totalPages
+  )
 
   return (
     <div className='book-page container'>
@@ -132,13 +120,7 @@ const BookPage = () => {
             key={book.id}
             onClick={() => navigate(`/book/${book.id}`)}
           >
-            <div className='book-card'>
-              <img src={book.avatar} alt={book.name} className='book-img' />
-              <h2 className='book-title'>{book.name}</h2>
-              <p className='book-author'>{book.author}</p>
-              <p className='book-genre'>{book.genre}</p>
-              <p className='book-price'>${book.price}</p>
-            </div>
+            <BookCard book={book} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -150,70 +132,19 @@ const BookPage = () => {
             <FaBookAtlas />
             <h1>List of Books</h1>
           </div>
-          <div className='filter-container'>
-            <div className='filter-group'>
-              <label className='filter-label'>Sort by views:</label>
-              <button
-                onClick={() =>
-                  setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'))
-                }
-                className='filter-button'
-              >
-                {sortOrder === 'asc' ? <FaArrowUp91 /> : <FaArrowDown19 />}
-              </button>
-            </div>
-            <div className='filter-group'>
-              <label htmlFor='rate-filter' className='filter-label'>
-                Filter:
-              </label>
-              <select
-                id='rate-filter'
-                value={selectedRate}
-                onChange={(e) => setSelectedRate(e.target.value)}
-                className='filter-select'
-              >
-                <option value='all'>All</option>
-                <option value='1'>Very Bad</option>
-                <option value='2'>Bad</option>
-                <option value='3'>Normal</option>
-                <option value='4'>Good</option>
-                <option value='5'>Very Good</option>
-              </select>
-            </div>
-          </div>
+          <BookFilter
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            selectedRate={selectedRate}
+            setSelectedRate={setSelectedRate}
+          />
         </div>
       </div>
 
       {/* Book list */}
       <ul className='book-list'>
         {currentBooks.length > 0 ? (
-          currentBooks.map((book) => (
-            <li
-              key={book.id}
-              className='book-list-item'
-              onClick={() => navigate(`/book/${book.id}`)}
-            >
-              <div className='box'>
-                <div className='book-list-view'>
-                  <FaEye /> <p>{book.view}</p>
-                </div>
-                <div className='book-list-dollar'>
-                  <FaDollarSign /> <p>{book.price}</p>
-                </div>
-              </div>
-
-              <img
-                src={book.avatar}
-                alt={book.name}
-                className='book-list-img'
-              />
-
-              <h2 className='book-list-title'>{book.name}</h2>
-              <p className='book-list-author'>Author: {book.author}</p>
-              <p className='book-list-desc'>{book.description}</p>
-              <p className='book-list-genre'>Genre: {book.genre}</p>
-            </li>
-          ))
+          currentBooks.map((book) => <ListBook key={book.id} book={book} />)
         ) : (
           <h3 className='no-books'>Not found!</h3>
         )}
@@ -221,33 +152,14 @@ const BookPage = () => {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className='pagination'>
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
-          >
-            ⬅
-          </button>
-
-          {showLeftDots && <span>...</span>}
-          {buttons.map((page) => (
-            <button
-              key={page}
-              className={currentPage === page ? 'active' : ''}
-              onClick={() => setCurrentPage(page)}
-            >
-              {page}
-            </button>
-          ))}
-          {showRightDots && <span>...</span>}
-
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
-          >
-            ➡
-          </button>
-        </div>
+        <PaginationComponent
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          showLeftDots={showLeftDots}
+          buttons={buttons}
+          showRightDots={showRightDots}
+          totalPages={totalPages}
+        />
       )}
 
       {/* Random Books */}
